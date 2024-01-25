@@ -1,0 +1,12 @@
+/* eslint-disable react/prop-types */
+import star from "../../assets/star.svg";
+export default function Rating({ value }) {
+  const stars = Array(value).fill(star);
+  return (
+    <>
+      {stars.map((item, index) => (
+        <img key={index} src={item.star} width={14} height={14} alt="star" />
+      ))}
+    </>
+  );
+}

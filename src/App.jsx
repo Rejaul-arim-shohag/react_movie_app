@@ -1,18 +1,21 @@
-import Footer from "./components/Footer";
+import { useState } from "react";
+import Cinema from "./components/Cinema/Cinema";
 import Header from "./components/Header";
-import HeroSection from "./components/HeroSection";
-import TaskBoard from "./components/TaskBoard/TaskBoard";
+import SideBar from "./components/SideBar";
+import { MovieContext } from "./context";
 
 function App() {
+  const [cartData, setCartData] = useState([]);
   return (
-    <div>
+    <MovieContext.Provider value={{ cartData, setCartData }}>
       <Header />
-      <div className="flex flex-col justify-center items-center">
-        <HeroSection />
-        <TaskBoard />
-      </div>
-      <Footer />
-    </div>
+      <main>
+        <div className="container grid lg:grid-cols-[218px_1fr] gap-[3.5rem]">
+          <SideBar />
+          <Cinema />
+        </div>
+      </main>
+    </MovieContext.Provider>
   );
 }
 

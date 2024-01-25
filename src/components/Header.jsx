@@ -1,14 +1,56 @@
-import LWSLogo from "../assets/lws-logo-en.svg";
-function Header() {
+import Logo from "../assets/logo.svg";
+import Ring from "../assets/ring.svg";
+import Moon from "../assets/icons/moon.svg";
+import ShoppingCart from "../assets/shopping-cart.svg";
+import { useContext, useState } from "react";
+import CartDetails from "./Cinema/CartDetails";
+import { MovieContext } from "../context";
+
+export default function Header() {
+  const [showCart, setShowCart] = useState(false);
+  const { cartData } = useContext(MovieContext);
+  const handleShowCart = () => {
+    setShowCart(true);
+  };
+  const handleCloseCart = () => {
+    setShowCart(false);
+  };
+  console.log("cartData", cartData);
   return (
-    <nav className="py-6 md:py-8 fixed top-0 w-full !bg-[#191D26] z-50">
-      <div className="container mx-auto flex items-center justify-between gap-x-6">
-        <a href="/">
-          <img className="h-[45px]" src={LWSLogo} alt="Lws" />
+    <header>
+      {showCart && <CartDetails onClose={handleCloseCart} />}
+      <nav className="container flex items-center justify-between space-x-10 py-6">
+        <a href="index.html">
+          <img src={Logo} width="139" height="26" alt="" />
         </a>
-      </div>
-    </nav>
+
+        <ul className="flex items-center space-x-5">
+          <li>
+            <a className="bg-primary/20 dark:bg-primary/[7%] rounded-lg backdrop-blur-[2px] p-1 inline-block" href="#">
+              <img src={Ring} width="24" height="24" alt="" />
+            </a>
+          </li>
+          <li>
+            <a className="bg-primary/20 dark:bg-primary/[7%] rounded-lg backdrop-blur-[2px] p-1 inline-block" href="#">
+              <img src={Moon} width="24" height="24" alt="" />
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={handleShowCart}
+              className="bg-primary/20 dark:bg-primary/[7%] rounded-lg backdrop-blur-[2px] p-1 inline-block"
+              href="#"
+            >
+              <img src={ShoppingCart} width="24" height="24" alt="" />
+              {cartData.length > 0 && (
+                <span className="rounded-full absolute top-[-12px] left-[28px] bg-[#12CF6F] text-white text-center p-[2px] w-[30px] h-[30px]">
+                  {cartData.length}
+                </span>
+              )}
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
   );
 }
-
-export default Header;
