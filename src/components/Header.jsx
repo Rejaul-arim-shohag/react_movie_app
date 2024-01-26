@@ -1,21 +1,23 @@
 import Logo from "../assets/logo.svg";
 import Ring from "../assets/ring.svg";
 import Moon from "../assets/icons/moon.svg";
+import Sun from "../assets/icons/sun.svg";
 import ShoppingCart from "../assets/shopping-cart.svg";
 import { useContext, useState } from "react";
 import CartDetails from "./Cinema/CartDetails";
-import { MovieContext } from "../context";
+import { MovieContext, ThemeContext } from "../context";
 
 export default function Header() {
   const [showCart, setShowCart] = useState(false);
-  const { cartData } = useContext(MovieContext);
+  const { state, dispatch } = useContext(MovieContext);
+  const { darkMode, setDarkMode } = useContext(ThemeContext);
+
   const handleShowCart = () => {
     setShowCart(true);
   };
   const handleCloseCart = () => {
     setShowCart(false);
   };
-  console.log("cartData", cartData);
   return (
     <header>
       {showCart && <CartDetails onClose={handleCloseCart} />}
@@ -31,8 +33,12 @@ export default function Header() {
             </a>
           </li>
           <li>
-            <a className="bg-primary/20 dark:bg-primary/[7%] rounded-lg backdrop-blur-[2px] p-1 inline-block" href="#">
-              <img src={Moon} width="24" height="24" alt="" />
+            <a
+              onClick={() => setDarkMode((mode) => !mode)}
+              className="bg-primary/20 dark:bg-primary/[7%] rounded-lg backdrop-blur-[2px] p-1 inline-block"
+              href="#"
+            >
+              <img src={darkMode ? Sun : Moon} width="24" height="24" alt="" />
             </a>
           </li>
           <li>
@@ -42,9 +48,9 @@ export default function Header() {
               href="#"
             >
               <img src={ShoppingCart} width="24" height="24" alt="" />
-              {cartData.length > 0 && (
+              {state.cartData.length > 0 && (
                 <span className="rounded-full absolute top-[-12px] left-[28px] bg-[#12CF6F] text-white text-center p-[2px] w-[30px] h-[30px]">
-                  {cartData.length}
+                  {state.cartData.length}
                 </span>
               )}
             </a>

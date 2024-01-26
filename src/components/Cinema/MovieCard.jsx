@@ -8,13 +8,17 @@ import { MovieContext } from "../../context";
 export default function MovieCard({ movie }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedMovie, setSelecetedMovie] = useState(null);
-  const { cartData, setCartData } = useContext(MovieContext);
+  const { state, dispatch } = useContext(MovieContext);
   const handleAddToCart = (event, movie) => {
     event.stopPropagation();
-    console.log("movie", movie);
-    const found = cartData?.find((item) => item.id === movie.id);
+    const found = state.cartData?.find((item) => item.id === movie.id);
     if (!found) {
-      setCartData([...cartData, movie]);
+      dispatch({
+        type: "ADD_TO_CART",
+        payLoad: {
+          ...movie,
+        },
+      });
     } else {
       console.error(`The movie ${movie.title} has been added to the cart already`);
     }
@@ -29,7 +33,7 @@ export default function MovieCard({ movie }) {
   };
   return (
     <>
-      {showModal && <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} onCartAdd={handleAddToCart}/>}
+      {showModal && <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} onCartAdd={handleAddToCart} />}
 
       <figure className="p-4 border border-black/10 shadow-sm dark:border-white/10 rounded-xl">
         <a href="#" onClick={() => handleMovieSelection(movie)}>
